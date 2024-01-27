@@ -41,4 +41,5 @@ networks:
         driver: bridge
 volumes:
     library-management-system-database:
+        name: library-management-system-database-vol
         driver: local
