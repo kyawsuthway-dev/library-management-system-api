@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\UserController;
+use App\Models\Author;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +36,10 @@ Route::post('users', [UserController::class, 'store'])->middleware('auth:sanctum
 Route::get('users/{user}', [UserController::class, 'show'])->middleware('auth:sanctum')->can('view', User::class);
 Route::put('users/{user}', [UserController::class, 'update'])->middleware('auth:sanctum')->can('update', User::class);
 Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', User::class);
+
+// author routes
+Route::get('authors', [AuthorController::class, 'index']);
+Route::post('authors', [AuthorController::class, 'store'])->middleware('auth:sanctum')->can('create', Author::class);
+Route::get('authors/{author}', [AuthorController::class, 'show']);
+Route::put('authors/{author}', [AuthorController::class, 'update'])->middleware('auth:sanctum')->can('update', Author::class);
+Route::delete('authors/{author}', [AuthorController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Author::class);
