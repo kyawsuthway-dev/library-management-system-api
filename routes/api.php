@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\UserController;
 use App\Models\Author;
+use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\User;
@@ -61,3 +63,10 @@ Route::post('publishers', [PublisherController::class, 'store'])->middleware('au
 Route::get('publishers/{publisher}', [PublisherController::class, 'show']);
 Route::put('publishers/{publisher}', [PublisherController::class, 'update'])->middleware('auth:sanctum')->can('update', Publisher::class);
 Route::delete('publishers/{publisher}', [PublisherController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Publisher::class);
+
+// book routes
+Route::get('books', [BookController::class, 'index']);
+Route::post('books', [BookController::class, 'store'])->middleware('auth:sanctum')->can('create', Book::class);
+Route::get('books/{book}', [BookController::class, 'show']);
+Route::put('books/{book}', [BookController::class, 'update'])->middleware('auth:sanctum')->can('update', Book::class);
+Route::delete('books/{book}', [BookController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Book::class);
