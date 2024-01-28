@@ -20,7 +20,7 @@ class BookSeeder extends Seeder
                 'category_id' => 1,
                 'title' => 'Clean Code',
                 'pages' => 434,
-                'quantity' => 1,
+                'borrowed' => false,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -29,7 +29,7 @@ class BookSeeder extends Seeder
                 'category_id' => 1,
                 'title' => 'Code Complete: A Practical Handbook of Software Construction, Second Edition',
                 'pages' => 960,
-                'quantity' => 1,
+                'borrowed' => false,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -38,7 +38,7 @@ class BookSeeder extends Seeder
                 'category_id' => 2,
                 'title' => 'Harry Potter and the Philosopher\'s Stone',
                 'pages' => 309,
-                'quantity' => 1,
+                'borrowed' => false,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
