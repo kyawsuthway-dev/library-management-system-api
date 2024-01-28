@@ -3,9 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\UserController;
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Publisher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,3 +54,10 @@ Route::post('categories', [CategoryController::class, 'store'])->middleware('aut
 Route::get('categories/{category}', [CategoryController::class, 'show']);
 Route::put('categories/{category}', [CategoryController::class, 'update'])->middleware('auth:sanctum')->can('update', Category::class);
 Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Category::class);
+
+// publisher routes
+Route::get('publishers', [PublisherController::class, 'index']);
+Route::post('publishers', [PublisherController::class, 'store'])->middleware('auth:sanctum')->can('create', Publisher::class);
+Route::get('publishers/{publisher}', [PublisherController::class, 'show']);
+Route::put('publishers/{publisher}', [PublisherController::class, 'update'])->middleware('auth:sanctum')->can('update', Publisher::class);
+Route::delete('publishers/{publisher}', [PublisherController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Publisher::class);
