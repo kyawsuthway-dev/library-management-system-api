@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Models\Author;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,3 +45,10 @@ Route::post('authors', [AuthorController::class, 'store'])->middleware('auth:san
 Route::get('authors/{author}', [AuthorController::class, 'show']);
 Route::put('authors/{author}', [AuthorController::class, 'update'])->middleware('auth:sanctum')->can('update', Author::class);
 Route::delete('authors/{author}', [AuthorController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Author::class);
+
+// category routes
+Route::get('categories', [CategoryController::class, 'index']);
+Route::post('categories', [CategoryController::class, 'store'])->middleware('auth:sanctum')->can('create', Category::class);
+Route::get('categories/{category}', [CategoryController::class, 'show']);
+Route::put('categories/{category}', [CategoryController::class, 'update'])->middleware('auth:sanctum')->can('update', Category::class);
+Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Category::class);
