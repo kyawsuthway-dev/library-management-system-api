@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\BookRequests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class UpdateBookRequest extends FormRequest
 {
@@ -30,5 +34,15 @@ class UpdateBookRequest extends FormRequest
             'authors' => 'array',
             'authors.*' => 'exists:authors,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

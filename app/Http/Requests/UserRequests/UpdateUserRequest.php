@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\UserRequests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
@@ -29,5 +33,15 @@ class UpdateUserRequest extends FormRequest
             'user_type_id' => 'integer|exists:user_types,id',
             'status' => [Rule::in(['active', 'inactive'])]
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

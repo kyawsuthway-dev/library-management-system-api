@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\CategoryRequests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -25,5 +29,15 @@ class UpdateCategoryRequest extends FormRequest
             'name' => 'string|max:100',
             'description' => 'string|max:255'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

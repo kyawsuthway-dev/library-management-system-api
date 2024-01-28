@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class LoginRequest extends FormRequest
 {
@@ -25,5 +29,15 @@ class LoginRequest extends FormRequest
             'email' => 'required',
             'password' => 'required',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
