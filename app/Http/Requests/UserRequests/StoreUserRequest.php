@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\UserRequests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -29,5 +33,15 @@ class StoreUserRequest extends FormRequest
             'user_type_id' => 'required|integer|exists:user_types,id',
             'password' => ['required', 'confirmed', Password::min(8)]
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\BorrowRequests;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class ReturnBorrowedBookRequest extends FormRequest
 {
@@ -26,5 +30,15 @@ class ReturnBorrowedBookRequest extends FormRequest
             'books' => 'required|array',
             'books.*' => 'exists:borrows,book_id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+            'success' => false,
+            'message' => $validator->errors(),
+            'time' => Carbon::now()
+        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
