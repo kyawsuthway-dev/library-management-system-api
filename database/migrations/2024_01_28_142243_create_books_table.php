@@ -21,7 +21,7 @@ return new class extends Migration
             );
             $table->string('title', 100);
             $table->integer('pages');
-            $table->integer('quantity');
+            $table->boolean('borrowed');
             $table->timestamps();
         });
     }

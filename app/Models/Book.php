@@ -21,7 +21,7 @@ class Book extends Model
         'category_id',
         'title',
         'pages',
-        'quantity',
+        'borrowed',
     ];
 
     /**
@@ -46,5 +46,13 @@ class Book extends Model
     public function authors(): BelongsToMany
     {
         return $this->belongsToMany(Author::class, 'book_authors');
+    }
+
+    /**
+     * Users that borrowed the book.
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'borrows');
     }
 }

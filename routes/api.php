@@ -3,11 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\UserController;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Borrow;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\User;
@@ -70,3 +72,8 @@ Route::post('books', [BookController::class, 'store'])->middleware('auth:sanctum
 Route::get('books/{book}', [BookController::class, 'show']);
 Route::put('books/{book}', [BookController::class, 'update'])->middleware('auth:sanctum')->can('update', Book::class);
 Route::delete('books/{book}', [BookController::class, 'destroy'])->middleware('auth:sanctum')->can('delete', Book::class);
+
+// borrow book routes
+Route::get('borrows', [BorrowController::class, 'index'])->middleware('auth:sanctum')->can('viewAny', Borrow::class);
+Route::post('borrows', [BorrowController::class, 'store'])->middleware('auth:sanctum')->can('create', Borrow::class);
+Route::post('return-books', [BorrowController::class, 'returnBook'])->middleware('auth:sanctum')->can('returnBook', Borrow::class);
