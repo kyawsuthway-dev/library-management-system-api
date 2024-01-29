@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,29 @@ class Book extends Model
         'pages',
         'borrowed',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {   
+        $query->when($filters['title'] ?? false, fn($query, $title) =>
+            $query->where('title', 'LIKE', "%$title%")
+        );
+
+        $query->when($filters['borrowed'] ?? false, fn($query, $borrowed) =>
+            $query->where('borrowed', (bool) $borrowed)
+        );
+
+        $query->when($filters['publisher_name'] ?? false, fn($query, $publisher_name) =>
+            $query->whereHas('publisher', fn($query) => (
+                $query->where('name', 'LIKE', "%$publisher_name%")
+            ))
+        );
+
+        $query->when($filters['author_name'] ?? false, fn($query, $author_name) => (
+            $query->whereHas('authors', fn($query) => (
+                $query->where('name', 'LIKE', "%$author_name%")
+            ))
+        ));
+    }
 
     /**
      * Get the publisher that owns the book.

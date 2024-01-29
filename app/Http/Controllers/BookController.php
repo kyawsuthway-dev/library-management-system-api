@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequests\SearchBookRequest;
 use App\Http\Requests\BookRequests\StoreBookRequest;
 use App\Http\Requests\BookRequests\UpdateBookRequest;
 use App\Http\Resources\BookResource;
@@ -10,10 +11,14 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(SearchBookRequest $request)
     {
         try {
-            $books = Book::with(['publisher:id,name,address,phone', 'category:id,name', 'authors:id,name'])->get();
+            $validated_request = $request->safe();
+
+            $books = Book::with(['publisher:id,name,address,phone', 'category:id,name', 'authors:id,name'])->filter(
+                $validated_request->toArray()
+            )->get();
 
             return $this->apiResponseSuccess('Books retrieved successfully!', BookResource::collection($books), 200);
         } catch (\Throwable $th) {
